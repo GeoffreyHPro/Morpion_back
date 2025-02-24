@@ -42,7 +42,6 @@ public class JWTService {
     public Boolean validate(UserDetails user, String token) {
         Claims claims = parser.parseClaimsJws(token).getBody();
         boolean unexpired = claims.getExpiration().before(Date.from(Instant.now()));
-        //System.out.println(claims.getSubject() + "  :  " + user.getUsername());
         return !unexpired && user.getUsername().equals(claims.getSubject());
     }
 }
