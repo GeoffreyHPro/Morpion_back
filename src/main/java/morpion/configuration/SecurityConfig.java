@@ -47,6 +47,8 @@ public class SecurityConfig {
                     .pathMatchers("/v3/**").permitAll()
                     .pathMatchers("/auth").permitAll()
                     .pathMatchers("/auth/security").authenticated()
+                    .pathMatchers("/auth/users").permitAll()
+                    .pathMatchers("/auth/add").permitAll()
                 )
                 .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .csrf().disable()
