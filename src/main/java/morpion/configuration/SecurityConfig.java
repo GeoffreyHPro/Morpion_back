@@ -41,15 +41,12 @@ public class SecurityConfig {
 
         return http
                 .authorizeExchange((auth) -> auth
-                    .pathMatchers("/webjars/**").permitAll()
-                    .pathMatchers("/swagger-ui.html").permitAll()
-                    .pathMatchers("/swagger-ui/**").permitAll()
-                    .pathMatchers("/v3/**").permitAll()
-                    .pathMatchers("/auth").permitAll()
-                    .pathMatchers("/auth/security").authenticated()
-                    .pathMatchers("/auth/users").permitAll()
-                    .pathMatchers("/auth/add").permitAll()
-                )
+                        .pathMatchers("/webjars/**").permitAll()
+                        .pathMatchers("/swagger-ui.html").permitAll()
+                        .pathMatchers("/swagger-ui/**").permitAll()
+                        .pathMatchers("/v3/**").permitAll()
+                        .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers("/user/**").authenticated())
                 .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .csrf().disable()
                 .build();
