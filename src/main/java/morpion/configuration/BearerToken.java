@@ -15,7 +15,6 @@ public class BearerToken extends AbstractAuthenticationToken {
     public String getCredentials() {
         return this.token;
     }
-    
 
     @Override
     public String getPrincipal() {
