@@ -33,7 +33,6 @@ public class AuthController {
     public Mono<ResponseEntity<Response<String>>> login(@RequestBody LoginRequest user) {
 
         Mono<User> foundUser = userService.getUserByEmail(user.getEmail());
-        System.out.println(foundUser);
 
         return foundUser.flatMap(u -> {
 

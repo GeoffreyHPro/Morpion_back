@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import morpion.exception.BadCredentialsException;
 import morpion.exception.NotFoundException;
 import morpion.service.JWTService;
 import morpion.service.UserService;
@@ -32,7 +33,7 @@ public class AuthManager implements ReactiveAuthenticationManager {
 
                             .flatMap(user -> {
                                 if (user.getUsername() == null) {
-                                    return Mono.error(new IllegalArgumentException("User not found"));
+                                    return Mono.error(new BadCredentialsException());
                                 }
 
                                 if (jwtService.validate(user, auth.getCredentials())) {
@@ -42,7 +43,7 @@ public class AuthManager implements ReactiveAuthenticationManager {
                                             user.getAuthorities()));
                                 }
 
-                                return Mono.error(new IllegalArgumentException("Invalid/Expired Token"));
+                                return Mono.error(new BadCredentialsException());
                             })
                             .onErrorResume(NotFoundException.class,
                                     err -> Mono.error(new NotFoundException()));
