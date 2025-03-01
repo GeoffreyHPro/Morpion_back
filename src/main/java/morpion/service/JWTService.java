@@ -20,7 +20,6 @@ public class JWTService {
     final private SecretKey key;
     final private JwtParser parser;
 
-    
     public JWTService() {
         this.key = Keys.hmacShaKeyFor("12386416848646146846414684165518474651.960846".getBytes());
         this.parser = Jwts.parser().setSigningKey(this.key).build();
