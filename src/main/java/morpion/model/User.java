@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 @Table("users")
 public class User implements UserDetails {
@@ -20,6 +21,8 @@ public class User implements UserDetails {
     private String roles;
 
     public User() {
+        this.username = "player" + new Random().nextInt(1000);
+        this.roles = "USER";
     }
 
     public User(String username, String email, String password, String roles) {

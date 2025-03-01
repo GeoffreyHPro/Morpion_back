@@ -6,22 +6,22 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import morpion.model.User;
 import morpion.service.JWTService;
+import morpion.service.UserService;
 import reactor.core.publisher.Mono;
 
 @Component
 public class AuthManager implements ReactiveAuthenticationManager {
 
     final JWTService jwtService;
-    final ReactiveUserDetailsService users;
+    final UserService userService;
 
-    public AuthManager(JWTService jwtService, ReactiveUserDetailsService users) {
+    public AuthManager(JWTService jwtService, UserService userService) {
         this.jwtService = jwtService;
-        this.users = users;
+        this.userService = userService;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AuthManager implements ReactiveAuthenticationManager {
                 .cast(BearerToken.class)
                 .flatMap(auth -> {
                     String getUserName = jwtService.getUserName(auth.getCredentials());
-                    Mono<UserDetails> foundUser = users.findByUsername(getUserName).defaultIfEmpty(new UserDetails() {
+                    Mono<User> foundUser = userService.getUserByEmail(getUserName).defaultIfEmpty(new User() {
 
                         @Override
                         public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,7 +72,7 @@ public class AuthManager implements ReactiveAuthenticationManager {
 
                     Mono<Authentication> authenticatedUser = foundUser.flatMap(u -> {
                         if (u.getUsername() == null) {
-                            Mono.error(new IllegalArgumentException("User not found"));
+                            return Mono.error(new IllegalArgumentException("User not found"));
                         }
                         if (jwtService.validate(u, auth.getCredentials())) {
                             return Mono.justOrEmpty(new UsernamePasswordAuthenticationToken(u.getUsername(),

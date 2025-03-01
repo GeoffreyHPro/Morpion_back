@@ -1,10 +1,7 @@
 package morpion.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,15 +19,12 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/auth")
 public class AuthController {
 
-    final ReactiveUserDetailsService users;
     final JWTService JWTService;
     final PasswordEncoder passwordEncoder;
+    final UserService userService;
 
-    @Autowired
-    private UserService userService;
-
-    public AuthController(ReactiveUserDetailsService users, JWTService JWTService, PasswordEncoder passwordEncoder) {
-        this.users = users;
+    public AuthController(UserService userService, JWTService JWTService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
         this.JWTService = JWTService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -38,7 +32,8 @@ public class AuthController {
     @PostMapping("/signIn")
     public Mono<ResponseEntity<Response<String>>> login(@RequestBody LoginRequest user) {
 
-        Mono<UserDetails> foundUser = users.findByUsername(user.getEmail());
+        Mono<User> foundUser = userService.getUserByEmail(user.getEmail());
+        System.out.println(foundUser);
 
         return foundUser.flatMap(u -> {
 
