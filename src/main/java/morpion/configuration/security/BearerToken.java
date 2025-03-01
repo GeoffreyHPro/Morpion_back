@@ -1,4 +1,4 @@
-package morpion.configuration;
+package morpion.configuration.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,7 +15,6 @@ public class BearerToken extends AbstractAuthenticationToken {
     public String getCredentials() {
         return this.token;
     }
-    
 
     @Override
     public String getPrincipal() {
