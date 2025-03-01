@@ -1,4 +1,4 @@
-package morpion.configuration;
+package morpion.configuration.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;

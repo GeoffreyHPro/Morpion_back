@@ -1,4 +1,4 @@
-package morpion.configuration;
+package morpion.model;
 
 public enum Role {
     USER,

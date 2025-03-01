@@ -1,4 +1,4 @@
-package morpion.configuration;
+package morpion.configuration.security;
 
 import java.util.Collection;
 
