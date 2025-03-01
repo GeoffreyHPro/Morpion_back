@@ -48,9 +48,7 @@ public class AuthController {
             }
             return Mono.just(
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                            .body(new Response<String>("", "User not found. Please Register"))
-
-            );
+                            .body(new Response<String>("", "User not found. Please Register")));
         });
     }
 
