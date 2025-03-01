@@ -17,6 +17,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Mono<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public Mono<User> addUser(String email, String password) {
         return userRepository.save(new User(email, password));
     }
