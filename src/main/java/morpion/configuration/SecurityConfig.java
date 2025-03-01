@@ -40,6 +40,7 @@ public class SecurityConfig {
         jwtFilter.setServerAuthenticationConverter(jwtAuthConverter);
 
         return http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange((auth) -> auth
                         .pathMatchers("/webjars/**").permitAll()
                         .pathMatchers("/swagger-ui.html").permitAll()
@@ -48,7 +49,6 @@ public class SecurityConfig {
                         .pathMatchers("/auth/**").permitAll()
                         .pathMatchers("/user/**").authenticated())
                 .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-                .csrf().disable()
                 .build();
     }
 }
