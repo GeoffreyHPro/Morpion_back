@@ -33,7 +33,6 @@ public class AuthController {
     public Mono<ResponseEntity<Response<String>>> login(@RequestBody LoginRequest user) {
 
         Mono<User> foundUser = userService.getUserByEmail(user.getEmail());
-        System.out.println(foundUser);
 
         return foundUser.flatMap(u -> {
 
@@ -48,9 +47,7 @@ public class AuthController {
             }
             return Mono.just(
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                            .body(new Response<String>("", "User not found. Please Register"))
-
-            );
+                            .body(new Response<String>("", "User not found. Please Register")));
         });
     }
 

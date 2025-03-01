@@ -3,6 +3,7 @@ package morpion.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import morpion.exception.NotFoundException;
 import morpion.model.User;
 import morpion.repository.UserRepository;
 import reactor.core.publisher.Flux;
@@ -18,7 +19,7 @@ public class UserService {
     }
 
     public Mono<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).switchIfEmpty(Mono.error(new NotFoundException()));
     }
 
     public Mono<User> addUser(String email, String password) {
